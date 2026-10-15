@@ -357,6 +357,12 @@ register(
     reward_threshold=6000.0,
 )
 
+register(
+    id="UnitreeA1-v5",
+    entry_point="gymnasium.envs.mujoco.unitree_a1_v5:UnitreeA1Env",
+    max_episode_steps=1000,
+)
+
 register(id="Humanoid-v2", entry_point=_raise_mujoco_py_error)
 
 register(id="Humanoid-v3", entry_point=_raise_mujoco_py_error)

@@ -83,6 +83,11 @@ include = ["gymnasium", "gymnasium.*"]
 [tool.setuptools.package-data]
 gymnasium = [
     "envs/mujoco/assets/*.xml",
+    "envs/mujoco/assets/unitree_a1_source/LICENSE",
+    "envs/mujoco/assets/unitree_a1_source/README.md",
+    "envs/mujoco/assets/unitree_a1_source/urdf/*.urdf",
+    "envs/mujoco/assets/unitree_a1_source/meshes/*.dae",
+    "envs/mujoco/assets/unitree_a1_source/meshes/*.png",
     "envs/classic_control/assets/*.png",
     "envs/phys2d/assets/*.png",
     "envs/toy_text/img/*.png",

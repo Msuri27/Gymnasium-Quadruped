@@ -670,6 +670,38 @@ def test_dt():
     # check_environments_match(env_a, env_b, num_steps=100)   # This Fails as expected
 
 
+def test_unitree_a1_v5():
+    """Checks the Unitree A1 model dimensions, reset state, and reward terms."""
+    env = gym.make("UnitreeA1-v5", reset_noise_scale=0).unwrapped
+    observation, reset_info = env.reset(seed=0)
+
+    assert env.action_space.shape == (12,)
+    assert observation.shape == (35,)
+    np.testing.assert_array_equal(env.data.qpos, env.model.key_qpos[0])
+    assert reset_info["x_position"] == env.data.qpos[0]
+    assert reset_info["y_position"] == env.data.qpos[1]
+
+    action = np.full(env.action_space.shape, 0.1, dtype=np.float32)
+    observation, reward, terminated, truncated, info = env.step(action)
+    assert observation.shape == (35,)
+    assert not terminated
+    assert not truncated
+    assert reward == info["reward_forward"] + info["reward_ctrl"]
+    assert info["reward_forward"] == info["x_velocity"]
+    assert np.isclose(info["reward_ctrl"], -0.1 * np.sum(np.square(action)))
+
+    env = gym.make(
+        "UnitreeA1-v5",
+        reset_noise_scale=0,
+        exclude_current_positions_from_observation=False,
+    ).unwrapped
+    observation, reset_info = env.reset(seed=0)
+    assert observation.shape == (37,)
+    np.testing.assert_array_equal(
+        observation[:2], [reset_info["x_position"], reset_info["y_position"]]
+    )
+
+
 @pytest.mark.parametrize(
     "env_id",
     [
